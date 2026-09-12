@@ -78,5 +78,5 @@ Publish self-contained binaries for `win-x64`, `osx-arm64`, and `osx-x64`, then 
 
 ```powershell
 ./samples/CounterSample/publish.ps1 -Install -Pack
-./pack.ps1   # NuGet + .streamDeckPlugin into artifacts/
+./pack.ps1   # NuGet + npm tarball + .streamDeckPlugin into artifacts/
 ```
