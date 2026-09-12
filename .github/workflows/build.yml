@@ -1,0 +1,31 @@
+name: build
+
+on:
+  push:
+    branches: [main, "feature/**"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Test
+        run: dotnet test StreamDeckPluginSharp.sln -c Release
+      - name: Generate PI contracts
+        run: |
+          dotnet build samples/CounterSample/CounterSample.csproj -c Release
+          dotnet exec src/StreamDeckPluginSharp.TypeGen/bin/Release/net8.0/StreamDeckPluginSharp.TypeGen.dll \
+            samples/CounterSample/bin/Release/net8.0/dev.flowingspdg.countersample.dll \
+            samples/CounterSample/pi/src/generated/contracts.ts
+      - name: Build Property Inspector
+        working-directory: samples/CounterSample/pi
+        run: |
+          npm install
+          npm run build

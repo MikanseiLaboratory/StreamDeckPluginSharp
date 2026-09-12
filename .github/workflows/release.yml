@@ -1,0 +1,27 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  nuget:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Pack
+        run: |
+          dotnet pack src/StreamDeckPluginSharp/StreamDeckPluginSharp.csproj -c Release -o artifacts
+          dotnet pack src/StreamDeckPluginSharp.TypeGen/StreamDeckPluginSharp.TypeGen.csproj -c Release -o artifacts
+      - name: Push
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [ -z "$NUGET_API_KEY" ]; then
+            echo "NUGET_API_KEY is not set; skipping nuget.org publish."
+            exit 0
+          fi
+          dotnet nuget push artifacts/*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
