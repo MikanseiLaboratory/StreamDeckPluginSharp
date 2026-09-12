@@ -5,18 +5,23 @@ on:
     tags: ["v*"]
 
 jobs:
-  nuget:
+  release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
       - name: Pack
         run: |
-          dotnet pack src/StreamDeckPluginSharp/StreamDeckPluginSharp.csproj -c Release -o artifacts
-          dotnet pack src/StreamDeckPluginSharp.TypeGen/StreamDeckPluginSharp.TypeGen.csproj -c Release -o artifacts
-      - name: Push
+          chmod +x pack.sh samples/CounterSample/publish.sh
+          ./pack.sh Release
+      - name: Push NuGet
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
@@ -24,4 +29,14 @@ jobs:
             echo "NUGET_API_KEY is not set; skipping nuget.org publish."
             exit 0
           fi
-          dotnet nuget push artifacts/*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          dotnet nuget push artifacts/nuget/*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            artifacts/nuget/*.nupkg \
+            artifacts/nuget/*.snupkg \
+            artifacts/plugin/*.streamDeckPlugin \
+            --title "${{ github.ref_name }}" \
+            --generate-notes

@@ -68,6 +68,11 @@ return <input type="number" {...bind("increment")} />;
 - a keypad action and a Stream Deck + dial sharing one `CounterStore`
 - typed settings synchronized with a React inspector
 - `publish.ps1` / `publish.sh` for `win-x64`, `osx-arm64`, and `osx-x64`
+- `./pack.ps1` (or `./pack.sh`) for NuGet packages plus a `.streamDeckPlugin` installer
+
+```powershell
+./samples/CounterSample/publish.ps1 -Install -Pack
+```
 
 ## Packages
 
@@ -86,7 +91,10 @@ return <input type="number" {...bind("increment")} />;
 
 ```bash
 dotnet test StreamDeckPluginSharp.sln
+./pack.sh   # or pack.ps1 on Windows
 ```
+
+GitHub Actions runs tests on every push/PR and uploads NuGet packages plus the sample `.streamDeckPlugin`. Tag `v*` to create a GitHub Release and, if `NUGET_API_KEY` is set, publish to nuget.org.
 
 ## License
 

@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   base: "./",
   build: {
-    outDir: "../com.flowingspdg.countersample.sdPlugin/ui",
+    outDir: "../dev.flowingspdg.countersample.sdPlugin/ui",
     emptyOutDir: true
   }
 });

@@ -8,14 +8,26 @@ Demonstrates StreamDeckPluginSharp:
 
 ## Run
 
-1. Build and publish:
+Build, pack a `.streamDeckPlugin`, and install into Stream Deck:
 
 ```powershell
-./publish.ps1
+./publish.ps1 -Install -Pack
 ```
 
-2. Copy `com.flowingspdg.countersample.sdPlugin` into the Stream Deck plugins folder, or use [Elgato CLI](https://docs.elgato.com/streamdeck/sdk/guides/packaging) `streamdeck restart` / link.
-3. Add **Shared Counter** to a key. Change increment in the inspector; press the key. The dial action updates the same count.
+Windows-only local install (faster):
 
-Windows plugins folder: `%APPDATA%\Elgato\StreamDeck\Plugins`  
-macOS plugins folder: `~/Library/Application Support/com.elgato.StreamDeck/Plugins`
+```powershell
+./publish.ps1 -Runtime win-x64 -Install
+```
+
+Repository-wide pack (NuGet + sample plugin) from the repo root:
+
+```powershell
+./pack.ps1
+```
+
+Then add **Shared Counter** to a key. Change increment in the inspector; press the key. The dial action updates the same count.
+
+Install destination:
+- Windows: `%APPDATA%\Elgato\StreamDeck\Plugins\dev.flowingspdg.countersample.sdPlugin`
+- macOS: `~/Library/Application Support/com.elgato.StreamDeck/Plugins/dev.flowingspdg.countersample.sdPlugin`

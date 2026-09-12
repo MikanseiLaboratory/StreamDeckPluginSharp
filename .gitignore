@@ -21,4 +21,4 @@ Thumbs.db
 coverage/
 .vscode/*
 !.vscode/extensions.json
-samples/**/com.*.sdPlugin/bin/
+samples/**/*.sdPlugin/bin/

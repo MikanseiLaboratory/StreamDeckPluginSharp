@@ -3,12 +3,12 @@
   "Name": "Counter Sample",
   "Author": "FlowingSPDG",
   "Description": "Sample Stream Deck plugin built with StreamDeckPluginSharp.",
-  "Version": "0.1.0",
+  "Version": "0.1.0.0",
   "Icon": "imgs/plugin",
-  "Category": "StreamDeckPluginSharp",
+  "Category": "Counter Sample",
   "CategoryIcon": "imgs/plugin",
-  "CodePath": "dev.flowingspdg.countersample.exe",
-  "CodePathMac": "dev.flowingspdg.countersample",
+  "CodePath": "bin/win-x64/dev.flowingspdg.countersample.exe",
+  "CodePathMac": "bin/osx-arm64/dev.flowingspdg.countersample",
   "PropertyInspectorPath": "ui/index.html",
   "SDKVersion": 2,
   "Software": {
@@ -30,12 +30,14 @@
       "Name": "Shared Counter",
       "Icon": "imgs/action",
       "Tooltip": "Increments a plugin-wide counter.",
-      "Controllers": ["Keypad"],
+      "Controllers": [
+        "Keypad"
+      ],
       "States": [
         {
           "Image": "imgs/key",
           "TitleAlignment": "middle",
-          "FontSize": "11"
+          "FontSize": 11
         }
       ]
     },
@@ -44,7 +46,9 @@
       "Name": "Shared Counter Dial",
       "Icon": "imgs/action",
       "Tooltip": "Rotates the shared counter on Stream Deck +.",
-      "Controllers": ["Encoder"],
+      "Controllers": [
+        "Encoder"
+      ],
       "Encoder": {
         "layout": "$B1"
       },

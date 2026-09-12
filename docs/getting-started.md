@@ -75,3 +75,8 @@ Your `manifest.json` should include both platforms:
 ```
 
 Publish self-contained binaries for `win-x64`, `osx-arm64`, and `osx-x64`, then copy them into the `.sdPlugin` folder. See `samples/CounterSample/publish.ps1` and `publish.sh`.
+
+```powershell
+./samples/CounterSample/publish.ps1 -Install -Pack
+./pack.ps1   # NuGet + .streamDeckPlugin into artifacts/
+```
