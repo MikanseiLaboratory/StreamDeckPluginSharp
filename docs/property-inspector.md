@@ -32,7 +32,7 @@ The generator emits camelCase interfaces that match System.Text.Json's default n
 ## React inspector
 
 ```tsx
-import { StreamDeckProvider, useSettings } from "@streamdeckpluginsharp/pi-client";
+import { StreamDeckProvider, useSettings } from "@mikanseilaboratory/pi-client";
 import type { CounterSettings } from "./generated/contracts";
 
 export function App() {

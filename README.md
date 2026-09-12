@@ -80,7 +80,7 @@ return <input type="number" {...bind("increment")} />;
 | --- | --- |
 | `StreamDeckPluginSharp` | Plugin host, actions, protocol |
 | `StreamDeckPluginSharp.TypeGen` (`sdps-typegen`) | C# → TypeScript contracts |
-| `@streamdeckpluginsharp/pi-client` | React hooks for inspectors. Published to npm on `v*` tags; the sample still uses a `file:` path so it stays in lockstep with this repo |
+| `@mikanseilaboratory/pi-client` | React hooks for inspectors. Published to npm on `v*` tags; the sample still uses a `file:` path so it stays in lockstep with this repo |
 
 ## Documentation
 
@@ -111,18 +111,18 @@ One-time nuget.org setup:
 
 One-time npm setup:
 
-1. Create the `@streamdeckpluginsharp` scope (or an npm org with that name) if it does not exist.
+1. The npm org `mikanseilaboratory` owns the `@mikanseilaboratory` scope.
 2. Publish the package once by hand so the name exists on npm. Trusted publishing cannot attach to a package that has never been published:
    ```bash
    cd packages/pi-client
    npm publish --access public
    ```
-3. npmjs.com → `@streamdeckpluginsharp/pi-client` → **Settings** → **Trusted publishing** → GitHub Actions:
+3. npmjs.com → `@mikanseilaboratory/pi-client` → **Settings** → **Trusted publishing** → GitHub Actions:
    - Organization or user: `MikanseiLaboratory`
    - Repository: `StreamDeckPluginSharp`
    - Workflow filename: `release.yml` (file name only)
    - Allowed actions: enable **Allow npm publish** (new configs default to staged publish only)
-4. Later tags (`v*`) publish `@streamdeckpluginsharp/pi-client` at the tag version (for example `v0.1.0` → `0.1.0`).
+4. Later tags (`v*`) publish `@mikanseilaboratory/pi-client` at the tag version (for example `v0.1.0` → `0.1.0`).
 
 ## License
 

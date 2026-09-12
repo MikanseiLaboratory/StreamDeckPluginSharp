@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { StreamDeckProvider } from "@streamdeckpluginsharp/pi-client";
+import { StreamDeckProvider } from "@mikanseilaboratory/pi-client";
 import { App } from "./App";
 import "./sdpi.css";
 import "./app.css";

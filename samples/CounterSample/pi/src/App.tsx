@@ -1,4 +1,4 @@
-import { usePluginMessage, useSendToPlugin, useSettings } from "@streamdeckpluginsharp/pi-client";
+import { usePluginMessage, useSendToPlugin, useSettings } from "@mikanseilaboratory/pi-client";
 import { useState } from "react";
 import type { CountChangedMessage, CounterSettings, PropertyInspectorCommand } from "./generated/contracts";
 

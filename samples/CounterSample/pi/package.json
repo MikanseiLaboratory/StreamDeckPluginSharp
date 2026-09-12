@@ -8,7 +8,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@streamdeckpluginsharp/pi-client": "file:../../../packages/pi-client",
+    "@mikanseilaboratory/pi-client": "file:../../../packages/pi-client",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
