@@ -6,6 +6,11 @@ export interface CountChangedMessage {
 }
 
 export interface CounterSettings {
+  label: string;
   increment: number;
+}
+
+export interface PropertyInspectorCommand {
+  type: string;
 }
 

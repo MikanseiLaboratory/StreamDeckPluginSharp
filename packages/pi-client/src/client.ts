@@ -26,8 +26,13 @@ export class StreamDeckPiClient implements StreamDeckPiApi {
     this.socket.onopen = () => {
       this.socket?.send(JSON.stringify({ event: registerEvent, uuid }));
       this.ready = true;
+      for (const queued of this.pending) {
+        this.socket?.send(queued);
+      }
+      this.pending = [];
       this.emit("ready", this.actionInfo);
       this.emit("didReceiveSettings", this.latestSettings);
+      this.getSettings();
     };
     this.socket.onmessage = (event) => {
       const message = JSON.parse(String(event.data)) as Incoming;

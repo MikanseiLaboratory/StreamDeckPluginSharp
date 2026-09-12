@@ -1,20 +1,23 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { StreamDeckPiClient, installConnectHook } from "./client";
 import type { StreamDeckPiApi } from "./types";
+
+const client = new StreamDeckPiClient();
+installConnectHook(client);
 
 const StreamDeckContext = createContext<StreamDeckPiApi | null>(null);
 
 export function StreamDeckProvider({ children }: { children: React.ReactNode }) {
-  const client = useMemo(() => new StreamDeckPiClient(), []);
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState(client.ready);
 
-  useEffect(() => {
-    installConnectHook(client);
-    return client.subscribe("ready", () => setReady(true));
-  }, [client]);
+  useEffect(() => client.subscribe("ready", () => setReady(true)), []);
 
   if (!ready) {
-    return null;
+    return (
+      <div style={{ padding: 12, fontFamily: "Segoe UI, sans-serif" }}>
+        Waiting for Stream Deck Property Inspector connection…
+      </div>
+    );
   }
 
   return <StreamDeckContext.Provider value={client}>{children}</StreamDeckContext.Provider>;

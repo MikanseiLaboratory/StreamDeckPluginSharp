@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useStreamDeck } from "./context";
 
 type SettingsRecord = Record<string, unknown>;
@@ -73,10 +73,6 @@ export function useGlobalSettings<T extends SettingsRecord>(defaults?: Partial<T
   return { settings, setSettings };
 }
 
-export function sendToPlugin<T>(payload: T): void {
-  throw new Error("sendToPlugin(payload) requires the hook form. Use useSendToPlugin().");
-}
-
 export function useSendToPlugin() {
   const client = useStreamDeck();
   return useCallback(<T,>(payload: T) => client.sendToPlugin(payload), [client]);
@@ -84,5 +80,7 @@ export function useSendToPlugin() {
 
 export function usePluginMessage<T>(handler: (payload: T) => void): void {
   const client = useStreamDeck();
-  useEffect(() => client.subscribe("sendToPropertyInspector", (payload) => handler(payload as T)), [client, handler]);
+  const handlerRef = useRef(handler);
+  handlerRef.current = handler;
+  useEffect(() => client.subscribe("sendToPropertyInspector", (payload) => handlerRef.current(payload as T)), [client]);
 }

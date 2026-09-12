@@ -93,13 +93,16 @@ try {
         }
         $dest = Join-Path $destRoot "$pluginId.sdPlugin"
         New-Item -ItemType Directory -Force -Path $destRoot | Out-Null
+        $cli = Get-Command streamdeck -ErrorAction SilentlyContinue
+        if ($cli) {
+            & streamdeck stop $pluginId
+        }
         if (Test-Path $dest) {
             Remove-Item -Recurse -Force $dest
         }
         Copy-Item -Recurse -Force $pluginDir $dest
         Write-Host "Installed plugin to $dest"
 
-        $cli = Get-Command streamdeck -ErrorAction SilentlyContinue
         if ($cli) {
             & streamdeck restart $pluginId
         }

@@ -24,20 +24,21 @@ public sealed class CounterAction(CounterStore store) : KeyActionBase<CounterSet
 
     public override async Task OnKeyDownAsync(ActionPayload payload, CancellationToken cancellationToken)
     {
-        store.Add(Settings.Increment);
+        store.Add(Math.Max(1, Settings.Increment));
         await ShowOkAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public override Task OnSettingsChangedAsync(CounterSettings previous, CounterSettings current, CancellationToken cancellationToken)
         => RefreshAsync(cancellationToken);
 
-    public override async Task OnPropertyInspectorDidAppearAsync(CancellationToken cancellationToken)
-    {
-        await SendCountAsync(cancellationToken).ConfigureAwait(false);
-    }
+    public override Task OnPropertyInspectorDidAppearAsync(CancellationToken cancellationToken)
+        => SendCountAsync(cancellationToken);
 
     public override Task OnPropertyInspectorMessageAsync(JsonElement payload, CancellationToken cancellationToken)
-        => SendCountAsync(cancellationToken);
+    {
+        InspectorBridge.Apply(store, InspectorBridge.ReadCommandType(payload), Math.Max(1, Settings.Increment));
+        return SendCountAsync(cancellationToken);
+    }
 
     private void OnStoreChanged(int count)
     {
@@ -46,7 +47,8 @@ public sealed class CounterAction(CounterStore store) : KeyActionBase<CounterSet
 
     private async Task RefreshAsync(CancellationToken cancellationToken)
     {
-        await SetTitleAsync($"{store.Count}\n+{Settings.Increment}", cancellationToken: cancellationToken).ConfigureAwait(false);
+        var label = string.IsNullOrWhiteSpace(Settings.Label) ? "Count" : Settings.Label;
+        await SetTitleAsync($"{label}\n{store.Count} (+{Math.Max(1, Settings.Increment)})", cancellationToken: cancellationToken).ConfigureAwait(false);
         await SendCountAsync(cancellationToken).ConfigureAwait(false);
     }
 

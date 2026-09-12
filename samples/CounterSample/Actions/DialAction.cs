@@ -1,3 +1,4 @@
+using System.Text.Json;
 using CounterSample.Contracts;
 using CounterSample.Services;
 using StreamDeckPluginSharp;
@@ -42,6 +43,15 @@ public sealed class DialAction(CounterStore store) : EncoderActionBase<CounterSe
     public override Task OnSettingsChangedAsync(CounterSettings previous, CounterSettings current, CancellationToken cancellationToken)
         => RefreshAsync(cancellationToken);
 
+    public override Task OnPropertyInspectorDidAppearAsync(CancellationToken cancellationToken)
+        => SendCountAsync(cancellationToken);
+
+    public override Task OnPropertyInspectorMessageAsync(JsonElement payload, CancellationToken cancellationToken)
+    {
+        InspectorBridge.Apply(store, InspectorBridge.ReadCommandType(payload), Math.Max(1, Settings.Increment));
+        return SendCountAsync(cancellationToken);
+    }
+
     private void OnStoreChanged(int count)
     {
         _ = RefreshAsync(CancellationToken.None);
@@ -49,11 +59,17 @@ public sealed class DialAction(CounterStore store) : EncoderActionBase<CounterSe
 
     private async Task RefreshAsync(CancellationToken cancellationToken)
     {
-        await SetTitleAsync(store.Count.ToString(), cancellationToken: cancellationToken).ConfigureAwait(false);
+        var label = string.IsNullOrWhiteSpace(Settings.Label) ? "Count" : Settings.Label;
+        await SetTitleAsync($"{label}: {store.Count}", cancellationToken: cancellationToken).ConfigureAwait(false);
         await SetFeedbackAsync(new Dictionary<string, object>
         {
+            ["title"] = label,
             ["value"] = store.Count.ToString(),
             ["indicator"] = Math.Clamp(store.Count, 0, 100)
         }, cancellationToken).ConfigureAwait(false);
+        await SendCountAsync(cancellationToken).ConfigureAwait(false);
     }
+
+    private Task SendCountAsync(CancellationToken cancellationToken)
+        => SendToPropertyInspectorAsync(new CountChangedMessage { Count = store.Count }, cancellationToken);
 }
