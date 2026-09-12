@@ -22,10 +22,10 @@ public sealed class CounterAction(CounterStore store) : KeyActionBase<CounterSet
         return Task.CompletedTask;
     }
 
-    public override async Task OnKeyDownAsync(ActionPayload payload, CancellationToken cancellationToken)
+    public override Task OnKeyDownAsync(ActionPayload payload, CancellationToken cancellationToken)
     {
         store.Add(Math.Max(1, Settings.Increment));
-        await ShowOkAsync(cancellationToken).ConfigureAwait(false);
+        return Task.CompletedTask;
     }
 
     public override Task OnSettingsChangedAsync(CounterSettings previous, CounterSettings current, CancellationToken cancellationToken)

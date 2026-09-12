@@ -34,10 +34,10 @@ public sealed class DialAction(CounterStore store) : EncoderActionBase<CounterSe
         await Task.CompletedTask;
     }
 
-    public override async Task OnDialDownAsync(ActionPayload payload, CancellationToken cancellationToken)
+    public override Task OnDialDownAsync(ActionPayload payload, CancellationToken cancellationToken)
     {
         store.Add(-store.Count);
-        await ShowOkAsync(cancellationToken).ConfigureAwait(false);
+        return Task.CompletedTask;
     }
 
     public override Task OnSettingsChangedAsync(CounterSettings previous, CounterSettings current, CancellationToken cancellationToken)
