@@ -5,7 +5,7 @@ on:
     tags: ["v*"]
 
 jobs:
-  release:
+  pack:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -21,15 +21,11 @@ jobs:
         run: |
           chmod +x pack.sh samples/CounterSample/publish.sh
           ./pack.sh Release
-      - name: Push NuGet
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: |
-          if [ -z "$NUGET_API_KEY" ]; then
-            echo "NUGET_API_KEY is not set; skipping nuget.org publish."
-            exit 0
-          fi
-          dotnet nuget push artifacts/nuget/*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Upload NuGet packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget
+          path: artifacts/nuget/*
       - name: GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -40,3 +36,27 @@ jobs:
             artifacts/plugin/*.streamDeckPlugin \
             --title "${{ github.ref_name }}" \
             --generate-notes
+
+  nuget:
+    needs: pack
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Download NuGet packages
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget
+          path: artifacts/nuget
+      - name: NuGet login (OIDC)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ vars.NUGET_USER }}
+      - name: Push to nuget.org
+        run: |
+          dotnet nuget push artifacts/nuget/*.nupkg \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate

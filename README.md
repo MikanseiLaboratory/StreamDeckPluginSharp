@@ -94,7 +94,15 @@ dotnet test StreamDeckPluginSharp.sln
 ./pack.sh   # or pack.ps1 on Windows
 ```
 
-GitHub Actions runs tests on every push/PR and uploads NuGet packages plus the sample `.streamDeckPlugin`. Tag `v*` to create a GitHub Release and, if `NUGET_API_KEY` is set, publish to nuget.org.
+GitHub Actions runs tests on every push/PR and uploads NuGet packages plus the sample `.streamDeckPlugin`. Tag `v*` to create a GitHub Release and publish to nuget.org via [Trusted Publishing](https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing) (OIDC). Do not store a long-lived `NUGET_API_KEY`.
+
+One-time nuget.org setup:
+
+1. nuget.org → account menu → **Trusted Publishing** → add a policy:
+   - Repository owner: `MikanseiLaboratory`
+   - Repository: `StreamDeckPluginSharp`
+   - Workflow file: `release.yml` (file name only)
+2. In this GitHub repo, add Actions variable `NUGET_USER` set to your nuget.org **profile name** (not email).
 
 ## License
 
