@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>StreamDeckPluginSharp</RootNamespace>
+    <AssemblyName>StreamDeckPluginSharp</AssemblyName>
+    <Description>Cross-platform Stream Deck plugin SDK for .NET 8. Async-first WebSocket protocol v2.0 coverage with typed Property Inspector bindings.</Description>
+    <PackageId>StreamDeckPluginSharp</PackageId>
+    <PackageTags>StreamDeck;Elgato;Plugin;SDK</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Version>0.1.0</Version>
+    <IsPackable>true</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="StreamDeckPluginSharp.Tests" />
+  </ItemGroup>
+</Project>

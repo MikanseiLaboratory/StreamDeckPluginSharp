@@ -1,0 +1,27 @@
+{
+  "name": "@streamdeckpluginsharp/pi-client",
+  "version": "0.1.0",
+  "description": "Typed React bindings for Stream Deck Property Inspectors.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MikanseiLaboratory/StreamDeckPluginSharp.git",
+    "directory": "packages/pi-client"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "license": "Apache-2.0"
+}
