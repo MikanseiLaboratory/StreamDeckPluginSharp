@@ -80,7 +80,7 @@ return <input type="number" {...bind("increment")} />;
 | --- | --- |
 | `StreamDeckPluginSharp` | Plugin host, actions, protocol |
 | `StreamDeckPluginSharp.TypeGen` (`sdps-typegen`) | C# → TypeScript contracts |
-| `@streamdeckpluginsharp/pi-client` | React hooks for inspectors |
+| `@streamdeckpluginsharp/pi-client` | React hooks for inspectors (publish to npm with the first SDK release; samples use a `file:` path until then) |
 
 ## Documentation
 

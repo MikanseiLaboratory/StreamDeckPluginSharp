@@ -14,8 +14,12 @@ export function StreamDeckProvider({ children }: { children: React.ReactNode }) 
 
   if (!ready) {
     return (
-      <div style={{ padding: 12, fontFamily: "Segoe UI, sans-serif" }}>
-        Waiting for Stream Deck Property Inspector connection…
+      <div className="sdpi-wrapper">
+        <div className="sdpi-heading">PROPERTY INSPECTOR</div>
+        <div className="sdpi-item">
+          <div className="sdpi-item-label">Status</div>
+          <div className="sdpi-item-value">Connecting…</div>
+        </div>
       </div>
     );
   }

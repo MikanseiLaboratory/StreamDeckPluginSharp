@@ -18,33 +18,34 @@ export function App() {
   };
 
   return (
-    <div className="sdpi-wrapper" style={{ fontFamily: "Segoe UI, sans-serif", padding: 12, display: "grid", gap: 10 }}>
-      <div>
-        <label htmlFor="label">Label</label>
-        <input id="label" type="text" {...bind("label")} />
+    <div className="sdpi-wrapper">
+      <div className="sdpi-heading">SETTINGS</div>
+      <div className="sdpi-item">
+        <div className="sdpi-item-label">Label</div>
+        <input className="sdpi-item-value" type="text" {...bind("label")} />
       </div>
-      <div>
-        <label htmlFor="increment">Increment</label>
-        <input id="increment" type="number" {...bind("increment")} />
+      <div className="sdpi-item">
+        <div className="sdpi-item-label">Increment</div>
+        <input className="sdpi-item-value" type="number" {...bind("increment")} />
       </div>
-      <div>
-        Shared count: <strong>{count}</strong>
+
+      <div className="sdpi-heading">COUNTER</div>
+      <div className="sdpi-item">
+        <div className="sdpi-item-label">Value</div>
+        <input className="sdpi-item-value" type="text" value={String(count)} readOnly />
       </div>
-      <div style={{ display: "flex", gap: 8 }}>
-        <button type="button" onClick={() => command("add")}>
+      <div className="sdpi-item">
+        <div className="sdpi-item-label">Actions</div>
+        <button className="sdpi-item-value" type="button" onClick={() => command("add")}>
           Add {settings.increment || 1}
         </button>
-        <button type="button" onClick={() => command("reset")}>
+        <button className="sdpi-item-value" type="button" onClick={() => command("reset")}>
           Reset
         </button>
-        <button type="button" onClick={() => command("refresh")}>
+        <button className="sdpi-item-value" type="button" onClick={() => command("refresh")}>
           Refresh
         </button>
       </div>
-      <p style={{ margin: 0, opacity: 0.75 }}>
-        Label and increment are saved with <code>setSettings</code> and appear on the key title from C#.
-        Add / Reset talk to the plugin over typed <code>sendToPlugin</code> messages.
-      </p>
     </div>
   );
 }

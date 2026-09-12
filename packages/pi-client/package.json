@@ -8,6 +8,18 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MikanseiLaboratory/StreamDeckPluginSharp.git",
+    "directory": "packages/pi-client"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "react": ">=18"
   },
