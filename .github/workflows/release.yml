@@ -26,11 +26,6 @@ jobs:
         with:
           name: nuget
           path: artifacts/nuget/*
-      - name: Upload npm package
-        uses: actions/upload-artifact@v4
-        with:
-          name: npm
-          path: artifacts/npm/*
       - name: GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -38,7 +33,6 @@ jobs:
           gh release create "${{ github.ref_name }}" \
             artifacts/nuget/*.nupkg \
             artifacts/nuget/*.snupkg \
-            artifacts/npm/*.tgz \
             artifacts/plugin/*.streamDeckPlugin \
             --title "${{ github.ref_name }}" \
             --generate-notes
@@ -66,26 +60,3 @@ jobs:
             --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
             --source https://api.nuget.org/v3/index.json \
             --skip-duplicate
-
-  npm:
-    needs: pack
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-    defaults:
-      run:
-        working-directory: packages/pi-client
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-          registry-url: "https://registry.npmjs.org"
-          package-manager-cache: false
-      - name: Ensure npm CLI for OIDC
-        run: npm install -g npm@latest
-      - name: Set version from tag
-        run: npm version "${GITHUB_REF_NAME#v}" --no-git-tag-version --allow-same-version
-      - name: Publish to npm
-        run: npm publish --access public

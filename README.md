@@ -68,7 +68,7 @@ return <input type="number" {...bind("increment")} />;
 - a keypad action and a Stream Deck + dial sharing one `CounterStore`
 - typed settings synchronized with a React inspector
 - `publish.ps1` / `publish.sh` for `win-x64`, `osx-arm64`, and `osx-x64`
-- `./pack.ps1` (or `./pack.sh`) for NuGet packages, the npm tarball, and a `.streamDeckPlugin` installer
+- `./pack.ps1` (or `./pack.sh`) for NuGet packages and a `.streamDeckPlugin` installer
 
 ```powershell
 ./samples/CounterSample/publish.ps1 -Install -Pack
@@ -80,7 +80,7 @@ return <input type="number" {...bind("increment")} />;
 | --- | --- |
 | `StreamDeckPluginSharp` | Plugin host, actions, protocol |
 | `StreamDeckPluginSharp.TypeGen` (`sdps-typegen`) | C# → TypeScript contracts |
-| `@mikanseilaboratory/pi-client` | React hooks for inspectors. Published to npm on `v*` tags; the sample still uses a `file:` path so it stays in lockstep with this repo |
+| [`@mikanseilaboratory/streamdeck-pi-client`](https://github.com/MikanseiLaboratory/streamdeck-pi-client) | React hooks for inspectors (shared with StreamDeckPluginRust) |
 
 ## Documentation
 
@@ -94,12 +94,9 @@ dotnet test StreamDeckPluginSharp.sln
 ./pack.sh   # or pack.ps1 on Windows
 ```
 
-GitHub Actions runs tests on every push/PR and uploads NuGet packages, the npm tarball, and the sample `.streamDeckPlugin`. Tag `v*` to create a GitHub Release and publish via OIDC Trusted Publishing:
+GitHub Actions runs tests on every push/PR and uploads NuGet packages and the sample `.streamDeckPlugin`. Tag `v*` to create a GitHub Release and publish to nuget.org via OIDC Trusted Publishing.
 
-- nuget.org: [Trusted Publishing](https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing)
-- npm: [Trusted publishers](https://docs.npmjs.com/trusted-publishers/)
-
-Do not store a long-lived `NUGET_API_KEY` or `NODE_AUTH_TOKEN`.
+Do not store a long-lived `NUGET_API_KEY`.
 
 One-time nuget.org setup:
 
@@ -109,20 +106,7 @@ One-time nuget.org setup:
    - Workflow file: `release.yml` (file name only)
 2. In this GitHub repo, add Actions variable `NUGET_USER` set to your nuget.org **profile name** (not email).
 
-One-time npm setup:
-
-1. The npm org `mikanseilaboratory` owns the `@mikanseilaboratory` scope.
-2. Publish the package once by hand so the name exists on npm. Trusted publishing cannot attach to a package that has never been published:
-   ```bash
-   cd packages/pi-client
-   npm publish --access public
-   ```
-3. npmjs.com → `@mikanseilaboratory/pi-client` → **Settings** → **Trusted publishing** → GitHub Actions:
-   - Organization or user: `MikanseiLaboratory`
-   - Repository: `StreamDeckPluginSharp`
-   - Workflow filename: `release.yml` (file name only)
-   - Allowed actions: enable **Allow npm publish** (new configs default to staged publish only)
-4. Later tags (`v*`) publish `@mikanseilaboratory/pi-client` at the tag version (for example `v0.1.0` → `0.1.0`).
+The Property Inspector client is published from [streamdeck-pi-client](https://github.com/MikanseiLaboratory/streamdeck-pi-client).
 
 ## License
 
